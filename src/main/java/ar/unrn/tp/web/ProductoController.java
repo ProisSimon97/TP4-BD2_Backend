@@ -3,13 +3,11 @@ package ar.unrn.tp.web;
 import ar.unrn.tp.api.ProductoService;
 import ar.unrn.tp.dto.ProductoDto;
 import ar.unrn.tp.modelo.Producto;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,5 +28,11 @@ public class ProductoController {
                 .toList();
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PutMapping
+    public ResponseEntity<String> update(@NotNull Long idProducto, String codigo, String descripcion, double precio, Long idCategoria, Long version, String marca) {
+        productoService.modificarProducto(idProducto, codigo, descripcion, precio, idCategoria, version, marca);
+        return new ResponseEntity<>("Producto modificado con exito!", HttpStatus.OK);
     }
 }

@@ -7,6 +7,9 @@ public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Version
+    private Long version;
     @Column(unique = true)
     private String codigo;
     private String descripcion;
@@ -51,6 +54,14 @@ public class Producto {
                 : new Producto(producto.codigo, producto.descripcion, producto.categoria, producto.precio, producto.marca);
     }
 
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
     public boolean esMarca(Marca marca) {
         return this.marca.equals(marca);
     }
@@ -86,6 +97,10 @@ public class Producto {
     }
 
     public Long id() { return this.id; }
+
+    public void id(Long id) {
+        this.id = id;
+    }
 
     public Marca getMarca() {
         return this.marca;

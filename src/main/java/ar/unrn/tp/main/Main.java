@@ -54,8 +54,6 @@ public class Main {
 
         ventaService.realizarVenta(1L, productos, 1L);
         ventaService.realizarVenta(1L, productos, 1L);
-
-        productoService.modificarProducto(1L, "555", "Modificado", 12500, 1L);
     }
 
     public static void inTransactionExecute(Consumer<EntityManager> bloqueDeCodigo) {

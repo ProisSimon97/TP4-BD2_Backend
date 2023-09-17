@@ -7,7 +7,7 @@ public interface ProductoService {
     void crearProducto(String codigo, String descripcion, double precio, String marca, Long idCategoria);
 
     //validar que sea un producto existente
-    void modificarProducto(Long idProducto, String codigo, String descripcion, double precio, Long idCategoria);
+    void modificarProducto(Long idProducto, String codigo, String descripcion, double precio, Long idCategoria, Long version, String marca);
 
     //Devuelve todos los productos
     List listarProductos();

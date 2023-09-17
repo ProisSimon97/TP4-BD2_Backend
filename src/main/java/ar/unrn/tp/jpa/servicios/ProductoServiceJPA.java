@@ -4,10 +4,7 @@ import ar.unrn.tp.api.ProductoService;
 import ar.unrn.tp.modelo.Categoria;
 import ar.unrn.tp.modelo.Marca;
 import ar.unrn.tp.modelo.Producto;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,7 +34,7 @@ public class ProductoServiceJPA implements ProductoService {
     }
 
     @Override
-    public void modificarProducto(Long idProducto, String codigo, String descripcion, double precio, Long idCategoria) {
+    public void modificarProducto(Long idProducto, String codigo, String descripcion, double precio, Long idCategoria, Long version, String marca) {
         inTransactionExecute((em) -> {
             Categoria categoria = em.find(Categoria.class, idCategoria);
             Producto producto = em.find(Producto.class, idProducto);
@@ -50,10 +47,12 @@ public class ProductoServiceJPA implements ProductoService {
                 throw new RuntimeException("La categoria solicitada no existe");
             }
 
-            producto.codigo(codigo);
-            producto.descripcion(descripcion);
-            producto.precio(precio);
-            producto.categoria(categoria);
+            Producto productoModificado = new Producto(codigo, descripcion, categoria, precio, new Marca(marca));
+
+            productoModificado.id(idProducto);
+            productoModificado.setVersion(version);
+
+            em.merge(productoModificado);
         });
     }
 
@@ -87,6 +86,8 @@ public class ProductoServiceJPA implements ProductoService {
             bloqueDeCodigo.accept(em);
 
             tx.commit();
+        } catch (OptimisticLockException e) {
+            throw new RuntimeException("El producto ya fue modificado: Version incorrecta", e);
 
         } catch (Exception e) {
             tx.rollback();

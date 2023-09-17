@@ -65,22 +65,21 @@ public class ProductoServiceTest {
 
     @Test
     public void Should_BeTrue_When_AProductIsModified() {
-       productoService.modificarProducto(1L, "555", "Prueba modificada", 60, 2L);
+       productoService.modificarProducto(1L, "555", "Prueba modificada", 60, 2L, 0L, "Prueba");
 
         inTransactionExecute((em) -> {
             Producto producto = em.find(Producto.class, 1L);
-
             Assertions.assertTrue(producto.esCodigo("555"));
             Assertions.assertTrue(producto.esDescripcion("Prueba modificada"));
             Assertions.assertTrue(producto.esCategoria(categoria2));
-            Assertions.assertTrue(producto.esMarca("Acme"));
+            Assertions.assertTrue(producto.esMarca("Prueba"));
         });
     }
 
     @Test
     public void Should_ThrowRuntimeException_When_ProductIsInvalid() {
         RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> {
-            productoService.modificarProducto(312L, "555", "Prueba modificada", 60, 1L);
+            productoService.modificarProducto(312L, "555", "Prueba modificada", 60, 1L, 0L, "Prueba");
         });
 
         Assertions.assertTrue(exception.getMessage().contains("El producto solicitado no existe"));
