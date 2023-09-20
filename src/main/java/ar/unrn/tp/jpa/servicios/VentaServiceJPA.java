@@ -1,17 +1,11 @@
 package ar.unrn.tp.jpa.servicios;
 
 import ar.unrn.tp.api.VentaService;
-import ar.unrn.tp.modelo.Carrito;
-import ar.unrn.tp.modelo.Cliente;
-import ar.unrn.tp.modelo.Producto;
-import ar.unrn.tp.modelo.Venta;
+import ar.unrn.tp.modelo.*;
 import ar.unrn.tp.modelo.promocion.PromocionCompra;
 import ar.unrn.tp.modelo.promocion.PromocionProducto;
-import ar.unrn.tp.modelo.Tarjeta;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
+import org.apache.commons.lang3.reflect.Typed;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -57,12 +51,26 @@ public class VentaServiceJPA implements VentaService {
            queryPromocionesCompra.setParameter("now", LocalDate.now());
            PromocionCompra promocionCompra = queryPromocionesCompra.getSingleResult();
 
-           Carrito carrito = new Carrito(cliente);
+           TypedQuery<NextNumber> queryNumber = em.createQuery("select n from NextNumber n where n.anio = :anio", NextNumber.class);
+           queryNumber.setParameter("anio", LocalDate.now().getYear());
+           queryNumber.setLockMode(LockModeType.PESSIMISTIC_WRITE);
 
+           NextNumber nextNumber = null;
+
+           try {
+               nextNumber = queryNumber.getSingleResult();
+               nextNumber.actual(nextNumber.recuperarSiguiente());
+
+           } catch(Exception e) {
+               nextNumber = new NextNumber(LocalDate.now().getYear(), 1);
+           }
+
+           Carrito carrito = new Carrito(cliente);
            carrito.agregarProductos(productosBd);
 
-           Venta venta = carrito.realizarCompra(promocionesProducto, promocionCompra, tarjeta);
+           Venta venta = carrito.realizarCompra(promocionesProducto, promocionCompra, tarjeta, nextNumber.numeroUnico());
 
+           em.persist(nextNumber);
            em.persist(venta);
        });
     }

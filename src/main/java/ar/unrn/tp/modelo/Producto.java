@@ -7,7 +7,6 @@ public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     @Version
     private Long version;
     @Column(unique = true)

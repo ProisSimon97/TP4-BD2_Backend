@@ -146,7 +146,7 @@ public class Tests {
         PromocionCompra promoCompra = new PromocionCompra(LocalDate.now().minusDays(3), LocalDate.now().plusDays(3), 0.08, tarjeta);
 
         Tienda tienda = new Tienda();
-        tienda.agregarVenta(carrito.realizarCompra(promocionesProducto, promoCompra, tarjetaCliente));
+        tienda.agregarVenta(carrito.realizarCompra(promocionesProducto, promoCompra, tarjetaCliente, "1-2023"));
 
         Assertions.assertTrue(tienda.estadoDeVentas());
     }

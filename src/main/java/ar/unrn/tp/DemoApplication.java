@@ -34,9 +34,6 @@ public class DemoApplication {
 	private static EntityManagerFactory emf;
 
 	@Autowired
-	ProductoService service;
-
-	@Autowired
 	ClienteService clienteService;
 
 	@Autowired
@@ -60,7 +57,7 @@ public class DemoApplication {
 			productoService.crearProducto("656", "Pantalon", 20000, "Adudas", 1L);
 
 			clienteService.crearCliente("Simon", "Preuss", "39870345", "simon@gmail.com");
-			clienteService.agregarTarjeta(1L, "7777", "Visa", 15000);
+			clienteService.agregarTarjeta(1L, "7777", "Visa", 15000000);
 
 			descuentoService.crearDescuento("Adudas", LocalDate.now().minusDays(2), LocalDate.now().plusDays(2), 0.5);
 			descuentoService.crearDescuentoSobreTotal("Visa", LocalDate.now().minusDays(2), LocalDate.now().plusDays(2), 0.5);

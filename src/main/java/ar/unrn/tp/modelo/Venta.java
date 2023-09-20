@@ -17,6 +17,8 @@ public class Venta {
     private List<ProductoVendido> productosComprados;
     @Column(name = "monto_total")
     private double montoTotal;
+    @Column(name = "numero_unico", unique = true)
+    private String numeroUnico;
 
     protected Venta() { }
 
@@ -25,5 +27,13 @@ public class Venta {
         this.cliente = cliente;
         this.productosComprados = productosComprados;
         this.montoTotal = montoTotal;
+    }
+
+    public void numeroUnico(String numeroUnico) {
+        this.numeroUnico = numeroUnico;
+    }
+
+    public String numeroUnico() {
+        return this.numeroUnico;
     }
 }
