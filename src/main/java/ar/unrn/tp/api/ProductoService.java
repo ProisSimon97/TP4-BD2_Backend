@@ -1,5 +1,7 @@
 package ar.unrn.tp.api;
 
+import ar.unrn.tp.modelo.Producto;
+
 import java.util.List;
 
 public interface ProductoService {
@@ -11,4 +13,6 @@ public interface ProductoService {
 
     //Devuelve todos los productos
     List listarProductos();
+
+    Producto obtener(Long id);
 }

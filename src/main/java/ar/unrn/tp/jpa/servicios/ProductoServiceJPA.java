@@ -76,6 +76,20 @@ public class ProductoServiceJPA implements ProductoService {
         }
     }
 
+    @Override
+    public Producto obtener(Long id) {
+        final Producto[] producto = {null};
+
+        inTransactionExecute((em) -> {
+            producto[0] = em.find(Producto.class, id);
+
+            if(producto[0] == null) {
+                throw new RuntimeException("El producto solicitado no existe");
+            }
+        });
+        return producto[0];
+    }
+
     public void inTransactionExecute(Consumer<EntityManager> bloqueDeCodigo) {
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();

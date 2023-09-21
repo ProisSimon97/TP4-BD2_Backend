@@ -16,6 +16,7 @@ public class ProductoDto {
     private String categoria;
     private double precio;
     private String marca;
+    private Long version;
 
     public static ProductoDto fromDomain(Producto producto) {
         return ProductoDto.builder()
@@ -25,6 +26,7 @@ public class ProductoDto {
                 .categoria(producto.categoria().tipo())
                 .precio(producto.getPrecio())
                 .marca(producto.getMarca().getTipo())
+                .version(producto.getVersion())
                 .build();
     }
 }

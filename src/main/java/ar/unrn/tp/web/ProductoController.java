@@ -35,4 +35,12 @@ public class ProductoController {
         productoService.modificarProducto(idProducto, codigo, descripcion, precio, idCategoria, version, marca);
         return new ResponseEntity<>("Producto modificado con exito!", HttpStatus.OK);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductoDto> find(Long id) {
+        Producto producto = productoService.obtener(id);
+        ProductoDto response = ProductoDto.fromDomain(producto);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
